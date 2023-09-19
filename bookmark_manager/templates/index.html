@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="container">
-  <h1>Bookmark List</h1>
+  <a href="/bookmark_manager/create" class="btn btn-primary">Add Bookmark</a>
   <ul class="list-group">
     {% for bookmark in bookmarks %}
     <li class="list-group-item">
