@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+  <h1>Bookmark List</h1>
+  <ul class="list-group">
+    {% for bookmark in bookmarks %}
+    <li class="list-group-item">
+      <h4>{{ bookmark.title }}</h4>
+      <p><a href="{{ bookmark.url }}" target="_blank">{{ bookmark.url }}</a></p>
+    </li>
+    {% empty %}
+    <li class="list-group-item">
+      <p class="empty-message">At the moment the list is empty.</p>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

@@ -1,3 +1,6 @@
 from django.shortcuts import render
+from .models import Bookmark
 
-# Create your views here.
+def index(request):
+    bookmarks = Bookmark.objects.all()
+    return render(request, 'index.html', {'bookmarks': bookmarks})
