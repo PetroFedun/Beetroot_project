@@ -1,17 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
-  <a href="/bookmark_manager/create" class="btn btn-primary">Add Bookmark</a>
+  <a href="/bookmark_manager/create" class="btn btn-primary mb-3">Add Bookmark</a>
   <ul class="list-group">
     {% for bookmark in bookmarks %}
-    <li class="list-group-item">
-      <h4>{{ bookmark.title }}</h4>
-      <p><a href="{{ bookmark.url }}" target="_blank">{{ bookmark.url }}</a></p>
-    </li>
+      <li class="list-group-item mb-3 d-flex justify-content-between align-items-center">
+        <div>
+            <h4>{{ bookmark.title }}</h4>
+            <p><a href="{{ bookmark.url }}" target="_blank">{{ bookmark.url }}</a></p>
+        </div>
+        <a href="/bookmark_manager/{{ bookmark.id }}/update" class="btn btn-primary">Edit</a>
+      </li>
     {% empty %}
-    <li class="list-group-item">
-      <p class="empty-message">At the moment the list is empty.</p>
-    </li>
+      <li class="list-group-item">
+        <p class="empty-message">At the moment the list is empty.</p>
+      </li>
     {% endfor %}
   </ul>
-</div>
 {% endblock %}
