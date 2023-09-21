@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Bookmark
 from .forms import BookmarkForm
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, DeleteView
 
 def index(request):
     bookmarks = Bookmark.objects.all()
@@ -11,6 +11,11 @@ class BookmarkUpdateView(UpdateView):
     model = Bookmark
     template_name = 'create.html'
     form_class = BookmarkForm
+
+class BookmarkDeleteView(DeleteView):
+    model = Bookmark
+    success_url = '/bookmark_manager/'
+    template_name = 'delete.html'
 
 def create(request):
     error = ''

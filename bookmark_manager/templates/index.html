@@ -8,7 +8,10 @@
             <h4>{{ bookmark.title }}</h4>
             <p><a href="{{ bookmark.url }}" target="_blank">{{ bookmark.url }}</a></p>
         </div>
-        <a href="/bookmark_manager/{{ bookmark.id }}/update" class="btn btn-primary">Edit</a>
+        <div>
+          <a href="/bookmark_manager/{{ bookmark.id }}/delete" class="btn btn-danger">Delete</a>
+          <a href="/bookmark_manager/{{ bookmark.id }}/update" class="btn btn-primary">Edit</a>
+        </div>
       </li>
     {% empty %}
       <li class="list-group-item">

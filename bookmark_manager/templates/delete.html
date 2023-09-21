@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h3>Delete bookmark</h1>
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+    <button class="btn btn-danger" type="submit">Delete bookmark</button>
+  </form>
+{% endblock %}
