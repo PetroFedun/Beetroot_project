@@ -2,10 +2,20 @@ from django.shortcuts import render, redirect
 from .models import Bookmark
 from .forms import BookmarkForm
 from django.views.generic import UpdateView, DeleteView
+from django.db.models import Q
 
 def index(request):
     bookmarks = Bookmark.objects.all()
     return render(request, 'index.html', {'bookmarks': bookmarks})
+
+def partial_search(request):
+    if request.htmx:
+      search = request.GET.get('q')
+      if search:
+          bookmarks = Bookmark.objects.filter(Q(title__icontains=search) | Q(description__icontains=search) | Q(url__icontains=search))
+      else:
+          bookmarks = Bookmark.objects.all()
+      return render(request, 'partial_results.html',{'bookmarks': bookmarks})
 
 class BookmarkUpdateView(UpdateView):
     model = Bookmark

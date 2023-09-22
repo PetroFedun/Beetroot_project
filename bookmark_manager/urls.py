@@ -6,4 +6,5 @@ urlpatterns = [
     path('create', views.create, name='create'),
     path('<int:pk>/update/', views.BookmarkUpdateView.as_view(), name='update'),
     path('<int:pk>/delete/', views.BookmarkDeleteView.as_view(), name='delete'),
+    path('partial-search/', views.partial_search, name='partial_search'),
 ]
