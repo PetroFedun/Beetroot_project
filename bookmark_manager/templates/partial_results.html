@@ -1,16 +1,25 @@
 <ul class="list-group">
   {% for bookmark in bookmarks %}
-    <li class="list-group-item mb-3 d-flex justify-content-between align-items-center" id="results">
+  <li class="list-group-item mb-3">
+    <div class="d-flex justify-content-between align-items-center">
       <div>
-          <h4>{{ bookmark.title }}</h4>
-          <p class="text-muted">{{ bookmark.description }}</p>
-          <p><a href="{{ bookmark.url }}" target="_blank">{{ bookmark.url }}</a></p>
+        <h4>{{ bookmark.title }}</h4>
+        <p class="text-muted">{{ bookmark.description }}</p>
+        <p><a href="{{ bookmark.url }}" target="_blank">{{ bookmark.url }}</a></p>
       </div>
       <div>
         <a href="/bookmark_manager/{{ bookmark.id }}/delete" class="btn btn-danger">Delete</a>
         <a href="/bookmark_manager/{{ bookmark.id }}/update" class="btn btn-primary">Edit</a>
       </div>
-    </li>
+    </div>
+    {% if bookmark.tags.all %}
+      <span>Tags: </span>
+      {% for tag in bookmark.tags.all %}
+        <a href="{% url 'tag_detail' tag.title %}">{{ tag.title }}</a>
+        {% if not forloop.last %}, {% endif %}
+      {% endfor %}
+    {% endif %}
+  </li>
   {% empty %}
     <p class="empty-message text-center">Your search did not match any bookmarks</p>
   {% endfor %}

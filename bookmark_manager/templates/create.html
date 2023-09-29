@@ -3,18 +3,7 @@
   <h3>{% if is_create_view %}Create a new{% else %}Update{% endif %} bookmark</h1>
   <form method="post">
     {% csrf_token %}
-    <div class="form-group">
-      {{ form.title.label_tag }}
-      {{ form.title }}
-    </div>
-    <div class="form-group">
-      {{ form.description.label_tag }}
-      {{ form.description }}
-    </div>
-    <div class="form-group">
-      {{ form.url.label_tag }}
-      {{ form.url }}
-    </div>
+    {{ form.as_p }}
     <div class="text-danger mb-3">{{ error }}</div>
     <button class="btn btn-success" type="submit">{% if is_create_view %}Create{% else %}Update{% endif %} bookmark</button>
   </form>
