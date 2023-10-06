@@ -1,7 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Bookmark, Tag, User
 from .forms import BookmarkTagForm, NewUserForm
-from django.views.generic import UpdateView, DeleteView
 from django.db.models import Q
 from django.contrib.auth import login, authenticate, logout 
 from django.contrib import messages
@@ -29,15 +28,25 @@ def partial_search(request):
           tags = Tag.objects.all()
       return render(request, 'partial_results.html',{'bookmarks': bookmarks, 'tags': tags})
 
-class BookmarkUpdateView(UpdateView):
-    model = Bookmark
-    template_name = 'create.html'
-    form_class = BookmarkTagForm
+def update(request, pk):
+    bookmark = get_object_or_404(Bookmark, pk=pk)
+    if request.method == 'POST':
+        form = BookmarkTagForm(request.POST, instance=bookmark)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Bookmark updated successfully.")
+            return redirect('bookmark_list')
+    else:
+        form = BookmarkTagForm(instance=bookmark)
+    return render(request, 'create.html', {'form': form})
 
-class BookmarkDeleteView(DeleteView):
-    model = Bookmark
-    success_url = '/bookmark_manager/'
-    template_name = 'delete.html'
+def delete(request, pk):
+    bookmark = get_object_or_404(Bookmark, pk=pk)
+    if request.method == 'POST':
+        bookmark.delete()
+        messages.success(request, "Bookmark deleted successfully.")
+        return redirect('bookmark_list')
+    return render(request, 'delete.html', {'bookmark': bookmark})
 
 def create(request):
     error = ''
