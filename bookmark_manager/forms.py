@@ -1,6 +1,8 @@
 from django import forms
 from .models import Bookmark, Tag
 import re
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
 class BookmarkTagForm(forms.ModelForm):
     bookmark_title = forms.CharField(max_length=50, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Bookmark Title'}))
@@ -25,3 +27,17 @@ class BookmarkTagForm(forms.ModelForm):
         bookmark.save()
         bookmark.tags.add(*tags)
         return bookmark
+
+class NewUserForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = ("username", "email", "password1", "password2")
+
+    def save(self, commit=True):
+        user = super(NewUserForm, self).save(commit=False)
+        user.email = self.cleaned_data['email']
+        if commit:
+            user.save()
+        return user

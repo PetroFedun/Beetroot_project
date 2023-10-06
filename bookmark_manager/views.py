@@ -1,13 +1,21 @@
 from django.shortcuts import render, redirect
 from .models import Bookmark, Tag
-from .forms import BookmarkTagForm
+from .forms import BookmarkTagForm, NewUserForm
 from django.views.generic import UpdateView, DeleteView
 from django.db.models import Q
+from django.contrib.auth import login, authenticate
+from django.contrib import messages
 
 def index(request):
-    bookmarks = Bookmark.objects.all()
-    tags = Tag.objects.all()
-    return render(request, 'index.html', {'bookmarks': bookmarks, 'tags': tags})
+    return render(request, 'index.html')
+    
+def bookmark_list(request):
+    if request.user.is_authenticated:
+        user_bookmarks = Bookmark.objects.filter(user=request.user)
+        tags = Tag.objects.all()
+        return render(request, 'bookmark_list.html', {'bookmarks': user_bookmarks, 'tags': tags})
+    else:
+        return render(request, 'bookmark_list.html')
 
 def partial_search(request):
     if request.htmx:
@@ -35,8 +43,10 @@ def create(request):
     if request.method == 'POST':
         form = BookmarkTagForm(request.POST)
         if form.is_valid():
-            bookmark = form.save()
-            return redirect('index')
+            bookmark = form.save(commit=False)
+            bookmark.user = request.user
+            bookmark.save()
+            return redirect('bookmark_list')
         else:
             error = 'Form isn`t valid'
     else:
@@ -51,3 +61,15 @@ def create(request):
 def tag_detail(request, tag):
     bookmarks = Bookmark.objects.filter(tags__title=tag)
     return render(request, 'tag_detail.html', {'bookmarks': bookmarks, 'tag': tag})
+
+def register_request(request):
+	if request.method == "POST":
+		form = NewUserForm(request.POST)
+		if form.is_valid():
+			user = form.save()
+			login(request, user)
+			messages.success(request, "Registration successful." )
+			return redirect("bookmark_list")
+		messages.error(request, "Unsuccessful registration. Invalid information.")
+	form = NewUserForm()
+	return render (request, "register.html", {"register_form":form})
