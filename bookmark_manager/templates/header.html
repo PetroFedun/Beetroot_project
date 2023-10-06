@@ -1,0 +1,19 @@
+<div class="container mt-4">
+  <nav class='d-flex justify-content-between  align-items-center'>
+    <h3>
+      <span class="font-weight-bold">Bookmark</span>
+      <span class="font-italic">Manager</span>
+    </h3>
+    {% if user.is_authenticated %}
+    <div class="search">
+      <input class="form-control mr-sm-2" name="q" placeholder="Search bookmarks" hx-get="{% url 'partial_search' %}" hx-target="#results" hx-trigger="input delay:0.2s">
+    </div>
+    <div>
+      <a href="/bookmark_manager/create" class="btn btn-primary">Add Bookmark</a>
+      <a href="/bookmark_manager/logout" class="btn btn-danger">Log out</a>
+    </div>
+    {% else %}
+      <a href="/bookmark_manager/login" class="btn btn-primary">Login</a>
+    {% endif %}
+  </nav>
+</div>
