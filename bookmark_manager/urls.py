@@ -10,4 +10,6 @@ urlpatterns = [
     path('partial-search/', views.partial_search, name='partial_search'),
     path('tag/<str:tag>/', views.tag_detail, name='tag_detail'),
     path("register/", views.register_request, name="register"),
+    path("login/", views.login_request, name="login"),
+    path("logout", views.logout_request, name= "logout"),
 ]
