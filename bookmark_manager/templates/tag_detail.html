@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-{% extends 'header.html' %}
-  <h1>Bookmarks with tag: {{ tag }}</h1>
+{% include 'header.html' %}
+  <h1 class='mt-4'>Bookmarks with tag: {{ tag }}</h1>
   <ul>
     {% for bookmark in bookmarks %}
       <li class="list-group-item mb-3">

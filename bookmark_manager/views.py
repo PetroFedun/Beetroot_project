@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Bookmark, Tag, User
+from .models import Bookmark, Tag
 from .forms import BookmarkTagForm, NewUserForm
 from django.db.models import Q
 from django.contrib.auth import login, authenticate, logout 
@@ -12,7 +12,7 @@ def index(request):
 def bookmark_list(request):
     if request.user.is_authenticated:
         user_bookmarks = Bookmark.objects.filter(user=request.user)
-        tags = Tag.objects.all()
+        tags = Tag.objects.filter(creator=request.user)
         return render(request, 'bookmark_list.html', {'bookmarks': user_bookmarks, 'tags': tags})
     else:
         return render(request, 'bookmark_list.html')
@@ -30,7 +30,7 @@ def partial_search(request):
         tags = Tag.objects.filter(Q(title__icontains=search))
       else:
           bookmarks = Bookmark.objects.filter(user=request.user)
-          tags = Tag.objects.all()
+          tags = Tag.objects.filter(creator=request.user)
       return render(request, 'partial_results.html',{'bookmarks': bookmarks, 'tags': tags})
 
 def update(request, pk):
@@ -58,24 +58,29 @@ def create(request):
     if request.method == 'POST':
         form = BookmarkTagForm(request.POST)
         if form.is_valid():
-            bookmark = form.save(commit=False)
+            bookmark = form.save(commit=False) 
             bookmark.user = request.user
-            bookmark.save()
+            bookmark.save() 
+            tags = form.cleaned_data.get('tags')
+            tags = form.cleaned_data.get('tags')
+            if tags is not None:
+                for tag in tags:
+                    bookmark.tags.add(tag)
             messages.info(request, "Bookmark created successfully.") 
             return redirect('bookmark_list')
         else:
             error = 'Form isn`t valid'
     else:
         form = BookmarkTagForm()
-    date = {
+    data = {
         'is_create_view': True,
         'form': form, 
         'error': error,
     }
-    return render(request, 'create.html', date)
+    return render(request, 'create.html', data)
 
 def tag_detail(request, tag):
-    bookmarks = Bookmark.objects.filter(tags__title=tag)
+    bookmarks = Bookmark.objects.filter(user=request.user, tags__title=tag) if request.user.is_authenticated else Bookmark.objects.filter(tags__title=tag)
     return render(request, 'tag_detail.html', {'bookmarks': bookmarks, 'tag': tag})
 
 def register_request(request):

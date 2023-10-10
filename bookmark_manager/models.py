@@ -15,6 +15,7 @@ class Bookmark(models.Model):
         return self.title
 
 class Tag(models.Model): 
+    creator = models.ForeignKey(User, on_delete=models.CASCADE, default=1) 
     title = models.CharField(max_length=50)
 
     def __str__(self):
