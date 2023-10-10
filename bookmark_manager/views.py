@@ -21,10 +21,15 @@ def partial_search(request):
     if request.htmx:
       search = request.GET.get('q')
       if search:
-          bookmarks = Bookmark.objects.filter(Q(title__icontains=search) | Q(description__icontains=search) | Q(url__icontains=search) | Q(tags__title__icontains=search))
-          tags = Tag.objects.filter(Q(title__icontains=search))
+        bookmarks = Bookmark.objects.filter(
+            Q(title__icontains=search) | 
+            Q(description__icontains=search) | 
+            Q(url__icontains=search) | 
+            Q(tags__title__icontains=search),
+            user=request.user).distinct()          
+        tags = Tag.objects.filter(Q(title__icontains=search))
       else:
-          bookmarks = Bookmark.objects.all()
+          bookmarks = Bookmark.objects.filter(user=request.user)
           tags = Tag.objects.all()
       return render(request, 'partial_results.html',{'bookmarks': bookmarks, 'tags': tags})
 
