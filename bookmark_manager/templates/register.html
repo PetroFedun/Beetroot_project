@@ -7,9 +7,7 @@
 {% if messages %}
     <div class="container">
         {% for message in messages %}
-            {% if message.tags == 'success' %}
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {% elif message.tags == 'error' %}
+            {% if message.tags == 'error' %}
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
             {% else %}
                 <div class="alert alert-info alert-dismissible fade show" role="alert">

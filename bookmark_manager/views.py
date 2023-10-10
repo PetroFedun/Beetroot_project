@@ -56,6 +56,7 @@ def create(request):
             bookmark = form.save(commit=False)
             bookmark.user = request.user
             bookmark.save()
+            messages.info(request, "Bookmark created successfully.") 
             return redirect('bookmark_list')
         else:
             error = 'Form isn`t valid'
