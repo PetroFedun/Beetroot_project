@@ -57,7 +57,7 @@ MIDDLEWARE = [
     'django_htmx.middleware.HtmxMiddleware',
 ]
 
-ROOT_URLCONF = "Beetroot_project.urls"
+ROOT_URLCONF = "project.urls"
 
 TEMPLATES = [
     {
@@ -75,7 +75,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "Beetroot_project.wsgi.application"
+WSGI_APPLICATION = "project.wsgi.application"
 
 
 # Database
