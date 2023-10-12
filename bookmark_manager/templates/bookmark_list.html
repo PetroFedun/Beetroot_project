@@ -22,8 +22,7 @@
   <ul class="list-inline">
     <li class="list-inline-item">
       {% for tag in tags|slice:":30" %}
-        <a href="{% url 'tag_detail' tag.title %}">{{ tag.title }}</a>
-        {% if not forloop.last %}, {% endif %}
+        <a href="{% url 'tag_detail' tag.title %}">{{ tag.title }}</a>{% if not forloop.last %}, {% endif %}
       {% empty %}
         <p class="empty-message mt-3">At the moment the list is empty.</p>
       {% endfor %}
@@ -48,8 +47,7 @@
       {% if bookmark.tags.all %}
         <span>Tags: </span>
         {% for tag in bookmark.tags.all %}
-          <a href="{% url 'tag_detail' tag.title %}">{{ tag.title }}</a>
-          {% if not forloop.last %}, {% endif %}
+          <a href="{% url 'tag_detail' tag.title %}">{{ tag.title }}</a>{% if not forloop.last %}, {% endif %}
         {% endfor %}
       {% endif %}
     </li>
