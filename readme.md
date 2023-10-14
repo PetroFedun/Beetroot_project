@@ -29,7 +29,7 @@ $ pip install -r requirements.txt
 ```
 $ python manage.py migrate
 ```
-5. Apply the database migrations:
+5. Run server:
 ```
 $ python manage.py runserver
 ```
