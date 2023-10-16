@@ -10,10 +10,10 @@
     <input class="form-control mr-sm-2" name="q" placeholder="Search bookmarks" hx-get="{% url 'partial_search' %}" hx-target="#results" hx-trigger="input delay:0.2s">
   </div>
   <div>
-    <a href="/bookmark_manager/create" class="btn btn-primary">Add Bookmark</a>
-    <a href="/bookmark_manager/logout" class="btn btn-danger">Log out</a>
+    <a href="/manager/create" class="btn btn-primary">Add Bookmark</a>
+    <a href="/manager/logout" class="btn btn-danger">Log out</a>
   </div>
   {% else %}
-    <a href="/bookmark_manager/login" class="btn btn-primary">Login</a>
+    <a href="/manager/login" class="btn btn-primary">Login</a>
   {% endif %}
 </nav>

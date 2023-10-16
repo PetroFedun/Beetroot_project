@@ -9,7 +9,7 @@ class Bookmark(models.Model):
     tags = models.ManyToManyField('Tag', blank=True, related_name='bookmarks')
 
     def get_absolute_url(self):
-        return f'/bookmark_manager/'
+        return f'/manager/'
     
     def __str__(self):
         return self.title

@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "bookmark_manager",
+    "manager",
     "bootstrap4",
     "django_htmx",
     "crispy_forms",
@@ -57,7 +57,7 @@ MIDDLEWARE = [
     'django_htmx.middleware.HtmxMiddleware',
 ]
 
-ROOT_URLCONF = "project.urls"
+ROOT_URLCONF = "bookmarks.urls"
 
 TEMPLATES = [
     {
@@ -75,7 +75,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "project.wsgi.application"
+WSGI_APPLICATION = "bookmarks.wsgi.application"
 
 
 # Database

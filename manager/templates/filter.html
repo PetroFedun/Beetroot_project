@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 {% include 'header.html' %}
-  <h1 class='mt-4'>Bookmarks with tag: {{ tag }}</h1>
+  <h1 class='mt-4'>Bookmarks with tag: {{ tags }}</h1>
   <ul class="list-group">
     {% for bookmark in bookmarks %}
       <li class="list-group-item mb-3">
@@ -12,8 +12,8 @@
             <p><a href="{{ bookmark.url }}" target="_blank">{{ bookmark.url }}</a></p>
           </div>
           <div>
-            <a href="/bookmark_manager/{{ bookmark.id }}/delete" class="btn btn-danger">Delete</a>
-            <a href="/bookmark_manager/{{ bookmark.id }}/update" class="btn btn-primary">Edit</a>
+            <a href="/manager/{{ bookmark.id }}/delete" class="btn btn-danger">Delete</a>
+            <a href="/manager/{{ bookmark.id }}/update" class="btn btn-primary">Edit</a>
           </div>
         </div>
         {% if bookmark.tags.all %}

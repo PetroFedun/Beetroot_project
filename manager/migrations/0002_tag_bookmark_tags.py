@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("bookmark_manager", "0001_initial"),
+        ("manager", "0001_initial"),
     ]
 
     operations = [
@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
             model_name="bookmark",
             name="tags",
             field=models.ManyToManyField(
-                blank=True, related_name="bookmarks", to="bookmark_manager.tag"
+                blank=True, related_name="bookmarks", to="manager.tag"
             ),
         ),
     ]
