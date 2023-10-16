@@ -2,7 +2,7 @@
 {% block content %}
 {% include 'header.html' %}
   <h1 class='mt-4'>Bookmarks with tag: {{ tag }}</h1>
-  <ul>
+  <ul class="list-group">
     {% for bookmark in bookmarks %}
       <li class="list-group-item mb-3">
         <div class="d-flex justify-content-between align-items-center">

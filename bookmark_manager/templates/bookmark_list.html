@@ -17,18 +17,22 @@
         {% endfor %}
     </div>
 {% endif %}
-<div class="tag-block mt-4">
-  <h3>Tags</h3>
-  <ul class="list-inline">
-    <li class="list-inline-item">
-      {% for tag in tags|slice:":30" %}
-        <a href="{% url 'tag_detail' tag.title %}">{{ tag.title }}</a>{% if not forloop.last %}, {% endif %}
-      {% empty %}
-        <p class="empty-message mt-3">At the moment the list is empty.</p>
-      {% endfor %}
-    </li>
-  </ul>
-</div>
+<form action="{% url 'filter' %}" method="get">
+  <div class="tag-block mt-4">
+    <h3>Tags</h3>
+    <ul class="list-inline">
+      <li class="list-inline-item">
+        {% for tag in tags|slice:":30" %}
+          <input type="checkbox" class="btn-check" id="btn-check-{{ tag.id }}" autocomplete="off" name="tags" value="{{ tag.title }}">
+          <label class="btn btn-checkbox" for="btn-check-{{ tag.id }}">{{ tag.title }}</label>
+        {% empty %}
+          <p class="empty-message mt-3">At the moment, the list is empty.</p>
+        {% endfor %}
+      </li>
+    </ul>
+  </div>
+  <button class="btn btn-primary mb-3" type="submit">Filter</button>
+</form>
 <h3>Bookmarks</h3>
 <ul class="list-group" id="results">
   {% for bookmark in bookmarks %}

@@ -1,0 +1,29 @@
+.btn-check {
+  display: none;
+}
+
+.btn-checkbox {
+  display: inline-block;
+  padding: 7px 15px;
+  color: #000;
+  border: solid 1px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.btn-check:checked + .btn {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.btn-check:checked + .btn::before {
+  content: '✔'; 
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  color: #fff;
+  font-weight: bold;
+}
