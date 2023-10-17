@@ -13,8 +13,8 @@ Django Bookmark Manager is a simple web application that allows you to manage yo
 
 1. Clone the repository to your local machine:
 ```
-$ git clone https://github.com/PetroFedun/project.git
-$ cd project
+$ git clone https://github.com/PetroFedun/bookmarks.git
+$ cd bookmarks
 ```
 2. Create a virtual environment and activate it:
 ```
@@ -33,4 +33,4 @@ $ python manage.py migrate
 ```
 $ python manage.py runserver
 ```
-6. Access the application in your web browser at http://localhost:8000/bookmark_manager.
+6. Access the application in your web browser at http://localhost:8000/manager.
