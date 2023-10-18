@@ -89,12 +89,12 @@ def create(request):
     }
     return render(request, 'create.html', data)
 
-def tag_detail(request, tag):
-    bookmarks = Bookmark.objects.filter(user=request.user, tags__title=tag) if request.user.is_authenticated else Bookmark.objects.filter(tags__title=tag)
+def tag_detail(request, tags):
+    bookmarks = Bookmark.objects.filter(user=request.user, tags__title=tags) if request.user.is_authenticated else Bookmark.objects.filter(tags__title=tags)
     paginator = Paginator(bookmarks, 10)
     page = request.GET.get('page')
     bookmarks = paginator.get_page(page)
-    return render(request, 'tag_detail.html', {'bookmarks': bookmarks, 'tag': tag})
+    return render(request, 'tag_detail.html', {'bookmarks': bookmarks, 'tags': tags})
 
 def filter(request):
     selected_tags = request.GET.getlist('tags')

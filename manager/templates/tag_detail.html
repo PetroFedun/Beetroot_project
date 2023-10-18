@@ -1,48 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
 {% include 'header.html' %}
-  <h1 class='mt-4'>Bookmarks with tag: {{ tag }}</h1>
-  <ul class="list-group">
-    {% for bookmark in bookmarks %}
-      <li class="list-group-item mb-3">
-        <div class="d-flex justify-content-between align-items-center">
-          <div>
-            <h4>{{ bookmark.title }}</h4>
-            <p class="text-muted">{{ bookmark.description }}</p>
-            <p><a href="{{ bookmark.url }}" target="_blank">{{ bookmark.url }}</a></p>
-          </div>
-          <div>
-            <a href="/manager/{{ bookmark.id }}/delete" class="btn btn-danger">Delete</a>
-            <a href="/manager/{{ bookmark.id }}/update" class="btn btn-primary">Edit</a>
-          </div>
-        </div>
-        {% if bookmark.tags.all %}
-          <span>Tags: </span>
-          {% for tag in bookmark.tags.all %}
-            <a href="{% url 'tag_detail' tag.title %}">{{ tag.title }}</a>
-            {% if not forloop.last %}, {% endif %}
-          {% endfor %}
-        {% endif %}
-      </li>
-    {% endfor %}
-    <div class="pagination mx-auto mb-3">
-      <ul class="pagination">
-          {% if bookmarks.has_previous %}
-              <li class="page-item">
-                  <a class="page-link" href="?page=1">&laquo; First</a>
-              </li>
-          {% endif %}
-          {% for i in bookmarks.paginator.page_range %}
-              <li class="page-item {% if i == bookmarks.number %}active{% endif %}">
-                  <a class="page-link" href="?page={{ i }}">{{ i }}</a>
-              </li>
-          {% endfor %}
-          {% if bookmarks.has_next %}
-              <li class="page-item">
-                  <a class="page-link" href="?page={{ bookmarks.paginator.num_pages }}">Last &raquo;</a>
-              </li>
-          {% endif %}
-      </ul>
-  </div>
-  </ul>
+  <h1 class='mt-4'>Bookmarks with tag: {{ tags }}</h1>
+  {% include 'bookmark_list_item.html' %}
 {% endblock %}

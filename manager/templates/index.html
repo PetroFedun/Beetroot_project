@@ -1,28 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
 {% include 'header.html' %}
-{% if messages %}
-    <div class="container mt-3">
-        {% for message in messages %}
-            {% if message.tags == 'info' %}
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {% else %}
-                <div class="alert alert-info alert-dismissible fade show" role="alert">
-            {% endif %}
-                {{ message }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        {% endfor %}
-    </div>
-{% endif %}
-<main style="margin-top: 150px;">
-  <h1>Welcome to our</h2>
-  <h1>Bookmark manager</h1>
-  <p class="text-muted mt-3">Keep your favorite pages in one place.</p>
-  <p class="text-muted">Organize your bookmarks easily and conveniently.</p>
-  <p class="text-muted">Forget about lost bookmarks - we're here to support you.</p>
-  <a href="/manager/register"  class="btn btn-primary mt-3">Sign up</a> 
-</main>
+{% include 'messages.html' %}
+  <main style="margin-top: 150px;">
+    <h1>Welcome to our</h2>
+    <h1>Bookmark manager</h1>
+    <p class="text-muted mt-3">Keep your favorite pages in one place.</p>
+    <p class="text-muted">Organize your bookmarks easily and conveniently.</p>
+    <p class="text-muted">Forget about lost bookmarks - we're here to support you.</p>
+    <a href="/manager/register"  class="btn btn-primary mt-3">Sign up</a> 
+  </main>
 {% endblock %}
