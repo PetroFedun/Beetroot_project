@@ -32,15 +32,15 @@ def partial_search(request):
                 Q(tags__title__icontains=search),
                 user=request.user).distinct()          
             tags = Tag.objects.filter(Q(title__icontains=search))
-            paginator = Paginator(user_bookmarks, 10)
+            paginator = Paginator(bookmarks, 10)
             page = request.GET.get('page')
-            user_bookmarks = paginator.get_page(page)
+            bookmarks = paginator.get_page(page)
         else:
             bookmarks = Bookmark.objects.filter(user=request.user)
-            paginator = Paginator(user_bookmarks, 1)
+            paginator = Paginator(bookmarks, 10)
             tags = Tag.objects.filter(creator=request.user)
             page = request.GET.get('page')
-            user_bookmarks = paginator.get_page(page)
+            bookmarks = paginator.get_page(page)
         return render(request, 'partial_results.html',{'bookmarks': bookmarks, 'tags': tags})
 
 def update(request, pk):
