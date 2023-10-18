@@ -5,33 +5,43 @@ from django.db.models import Q
 from django.contrib.auth import login, authenticate, logout 
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
+from django.core.paginator import Paginator
 
 def index(request):
     return render(request, 'index.html')
     
 def bookmark_list(request):
     if request.user.is_authenticated:
-        user_bookmarks = Bookmark.objects.filter(user=request.user)
+        bookmarks = Bookmark.objects.filter(user=request.user)
+        paginator = Paginator(bookmarks, 10)
         tags = Tag.objects.filter(creator=request.user)
-        return render(request, 'bookmark_list.html', {'bookmarks': user_bookmarks, 'tags': tags})
+        page = request.GET.get('page')
+        bookmarks = paginator.get_page(page)
+        return render(request, 'bookmark_list.html', {'bookmarks': bookmarks, 'tags': tags})
     else:
         return render(request, 'bookmark_list.html')
 
 def partial_search(request):
     if request.htmx:
-      search = request.GET.get('q')
-      if search:
-        bookmarks = Bookmark.objects.filter(
-            Q(title__icontains=search) | 
-            Q(description__icontains=search) | 
-            Q(url__icontains=search) | 
-            Q(tags__title__icontains=search),
-            user=request.user).distinct()          
-        tags = Tag.objects.filter(Q(title__icontains=search))
-      else:
-          bookmarks = Bookmark.objects.filter(user=request.user)
-          tags = Tag.objects.filter(creator=request.user)
-      return render(request, 'partial_results.html',{'bookmarks': bookmarks, 'tags': tags})
+        search = request.GET.get('q')
+        if search:
+            bookmarks = Bookmark.objects.filter(
+                Q(title__icontains=search) | 
+                Q(description__icontains=search) | 
+                Q(url__icontains=search) | 
+                Q(tags__title__icontains=search),
+                user=request.user).distinct()          
+            tags = Tag.objects.filter(Q(title__icontains=search))
+            paginator = Paginator(user_bookmarks, 10)
+            page = request.GET.get('page')
+            user_bookmarks = paginator.get_page(page)
+        else:
+            bookmarks = Bookmark.objects.filter(user=request.user)
+            paginator = Paginator(user_bookmarks, 1)
+            tags = Tag.objects.filter(creator=request.user)
+            page = request.GET.get('page')
+            user_bookmarks = paginator.get_page(page)
+        return render(request, 'partial_results.html',{'bookmarks': bookmarks, 'tags': tags})
 
 def update(request, pk):
     bookmark = get_object_or_404(Bookmark, pk=pk)
@@ -81,6 +91,9 @@ def create(request):
 
 def tag_detail(request, tag):
     bookmarks = Bookmark.objects.filter(user=request.user, tags__title=tag) if request.user.is_authenticated else Bookmark.objects.filter(tags__title=tag)
+    paginator = Paginator(bookmarks, 10)
+    page = request.GET.get('page')
+    bookmarks = paginator.get_page(page)
     return render(request, 'tag_detail.html', {'bookmarks': bookmarks, 'tag': tag})
 
 def filter(request):
@@ -94,36 +107,36 @@ def filter(request):
     return render(request, 'filter.html', context)
 
 def register_request(request):
-	if request.method == "POST":
-		form = NewUserForm(request.POST)
-		if form.is_valid():
-			user = form.save()
-			login(request, user)
-			messages.success(request, "Registration successful." )
-			return redirect("bookmark_list")
-		messages.error(request, "Unsuccessful registration. Invalid information.")
-	form = NewUserForm()
-	return render (request, "register.html", {"register_form":form})
+    if request.method == "POST":
+        form = NewUserForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, "Registration successful." )
+            return redirect("bookmark_list")
+        messages.error(request, "Unsuccessful registration. Invalid information.")
+    form = NewUserForm()
+    return render (request, "register.html", {"register_form":form})
 
 def login_request(request):
-	if request.method == "POST":
-		form = AuthenticationForm(request, data=request.POST)
-		if form.is_valid():
-			username = form.cleaned_data.get('username')
-			password = form.cleaned_data.get('password')
-			user = authenticate(username=username, password=password)
-			if user is not None:
-				login(request, user)
-				messages.info(request, f"You are now logged in as {username}.")
-				return redirect("bookmark_list")
-			else:
-				messages.error(request,"Invalid username or password.")
-		else:
-			messages.error(request,"Invalid username or password.")
-	form = AuthenticationForm()
-	return render(request, 'login.html', {"login_form":form})
+    if request.method == "POST":
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.info(request, f"You are now logged in as {username}.")
+                return redirect("bookmark_list")
+            else:
+                messages.error(request,"Invalid username or password.")
+        else:
+            messages.error(request,"Invalid username or password.")
+    form = AuthenticationForm()
+    return render(request, 'login.html', {"login_form":form})
 
 def logout_request(request):
-	logout(request)
-	messages.info(request, "You have successfully logged out.") 
-	return redirect("index")
+    logout(request)
+    messages.info(request, "You have successfully logged out.") 
+    return redirect("index")
