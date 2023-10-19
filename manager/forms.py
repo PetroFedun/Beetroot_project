@@ -14,16 +14,16 @@ class BookmarkTagForm(forms.ModelForm):
         model = Bookmark
         fields = []
 
-    def save(self, commit=True):
+    def save(self, user, commit=True):
         bookmark_title = self.cleaned_data['bookmark_title']
         bookmark_description = self.cleaned_data['bookmark_description']
         bookmark_url = self.cleaned_data['bookmark_url']
         tag_titles = re.split(r'[,\s]+', self.cleaned_data['tag_title'])
         tags = []
         for tag_title in tag_titles:
-            tag, created = Tag.objects.get_or_create(title=tag_title)
+            tag, created = Tag.objects.get_or_create(title=tag_title, creator=user)
             tags.append(tag)
-        bookmark = Bookmark(title=bookmark_title, description=bookmark_description, url=bookmark_url)
+        bookmark = Bookmark(title=bookmark_title, description=bookmark_description, url=bookmark_url, user=user)
         bookmark.save()
         bookmark.tags.add(*tags)
         return bookmark

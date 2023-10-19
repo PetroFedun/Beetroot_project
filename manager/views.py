@@ -68,10 +68,9 @@ def create(request):
     if request.method == 'POST':
         form = BookmarkTagForm(request.POST)
         if form.is_valid():
-            bookmark = form.save(commit=False) 
+            bookmark = form.save(commit=False, user=request.user) 
             bookmark.user = request.user
             bookmark.save() 
-            tags = form.cleaned_data.get('tags')
             tags = form.cleaned_data.get('tags')
             if tags is not None:
                 for tag in tags:
