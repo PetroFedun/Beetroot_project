@@ -43,22 +43,25 @@
 {% empty %}
   <p class="empty-message mt-3">At the moment the list is empty.</p>
 {% endfor %}
-<div class="pagination mx-auto mb-3">
-  <ul class="pagination">
-    {% if bookmarks.has_previous %}
-      <li class="page-item">
-        <a class="page-link" href="?page=1">&laquo; First</a>
-      </li>
-    {% endif %}
-    {% for i in bookmarks.paginator.page_range %}
-      <li class="page-item {% if i == bookmarks.number %}active{% endif %}">
-        <a class="page-link" href="?page={{ i }}">{{ i }}</a>
-      </li>
-    {% endfor %}
-    {% if bookmarks.has_next %}
-      <li class="page-item">
-        <a class="page-link" href="?page={{ bookmarks.paginator.num_pages }}">Last &raquo;</a>
-      </li>
-    {% endif %}
-  </ul>
-</div>
+{% if bookmarks.paginator.num_pages > 1 %}
+  <div class="pagination mx-auto mb-3">
+    <ul class="pagination">
+      {% if bookmarks.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page=1">&laquo; First</a>
+        </li>
+      {% endif %}
+      {% for i in bookmarks.paginator.page_range %}
+        <li class="page-item {% if i == bookmarks.number %}active{% endif %}">
+          <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+        </li>
+      {% endfor %}
+      {% if bookmarks.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ bookmarks.paginator.num_pages }}">Last &raquo;</a>
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+{% endif %}
+
