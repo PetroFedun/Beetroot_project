@@ -43,25 +43,20 @@
 {% empty %}
   <p class="empty-message mt-3">At the moment the list is empty.</p>
 {% endfor %}
-{% if bookmarks.paginator.num_pages > 1 %}
-  <div class="pagination mx-auto mb-3">
-    <ul class="pagination">
-      {% if bookmarks.has_previous %}
-        <li class="page-item">
-          <a class="page-link" href="?page=1">&laquo; First</a>
-        </li>
-      {% endif %}
-      {% for i in bookmarks.paginator.page_range %}
-        <li class="page-item {% if i == bookmarks.number %}active{% endif %}">
-          <a class="page-link" href="?page={{ i }}">{{ i }}</a>
-        </li>
-      {% endfor %}
-      {% if bookmarks.has_next %}
-        <li class="page-item">
-          <a class="page-link" href="?page={{ bookmarks.paginator.num_pages }}">Last &raquo;</a>
-        </li>
-      {% endif %}
-    </ul>
-  </div>
+{% if bookmarks.paginator.num_pages > 1 and not partial_results %}
+    <div id="load-more" class="text-center mt-3">
+        {% if bookmarks.has_next %}
+            <div class="load-more">
+                <button
+                    hx-get="{% url 'partial_search' %}"
+                    hx-target="#load-more"
+                    hx-vals='{"q": "{{ request.GET.q }}", "page": "{{ bookmarks.paginator.num_pages  }}"}'
+                    hx-swap="outerHTML"
+                    class="btn btn-primary mb-3"
+                >
+                    Load More
+                </button>
+            </div>
+        {% endif %}
+    </div>
 {% endif %}
-
