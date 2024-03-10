@@ -98,7 +98,7 @@ def tag_detail(request, tags):
 def filter(request):
     selected_tags = request.GET.getlist('tags')
     selected_tags_str = ', '.join(selected_tags)
-    bookmarks = Bookmark.objects.filter(tags__title__in=selected_tags)
+    bookmarks = Bookmark.objects.filter(user=request.user, tags__title__in=selected_tags)
     context = {
         'bookmarks': bookmarks,
         'tags': selected_tags_str
