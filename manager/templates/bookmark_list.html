@@ -6,7 +6,7 @@
 <form action="{% url 'filter' %}" method="get">
   <div class="tag-block mt-4">
     <h3>Tags</h3>
-    <ul class="list-inline">
+    <ul class="list-inline mb-0">
       <li class="list-inline-item">
         {% for tag in tags|slice:":30" %}
           {% if tag.bookmarks.exists %}
@@ -14,7 +14,7 @@
             <label class="btn btn-checkbox" for="btn-check-{{ tag.id }}">{{ tag.title }}</label>
           {% endif %}
         {% empty %}
-          <p class="empty-message mt-3">At the moment, the list is empty.</p>
+          <p class="empty-message mt-2">At the moment, the list is empty.</p>
         {% endfor %}
       </li>
     </ul>
