@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}{{ user.username }} | Profile Page{% endblock title %}
+{% block content %}
+<h3>
+  <a href="{% url 'bookmark_list' %}" style="text-decoration: none; color: inherit;">
+    <span class="font-weight-bold">Bookmark</span>
+    <span class="font-italic">Manager</span>
+  </a>
+</h3>
+{% include 'messages.html' %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          <h3>Profile</h3>
+        </div>
+        <div class="card-body">
+          <p class="lead">Username: {{ user.username }}</p>
+          <p class="lead">Date of join: {{ user.date_joined|date:"F Y" }}</p>
+          <p class="lead">Email: {{ user.email }}</p>
+          <form method="post" action="{% url 'profile' %}">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="new-username">New Username:</label>
+              <input type="text" class="form-control" id="new-username" name="new_username" value="{{ user.username }}">
+            </div>
+            <div class="form-group">
+              <label for="new-email">New Email:</label>
+              <input type="email" class="form-control" id="new-email" name="new_email" value="{{ user.email }}">
+            </div>
+            <button type="submit" class="btn btn-primary">Update Profile</button>
+            <a href="/manager/profile/delete" class="btn btn-danger" data-toggle="modal" data-target="#deleteProfileModal">Delete Profile</a>
+            <a href="/manager/logout" class="btn btn-danger">Log out</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal window -->
+<div class="modal" id="deleteProfileModal" tabindex="-1" role="dialog" aria-labelledby="deleteProfileModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteProfileModalLabel">Delete Profile Confirmation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete your profile?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <form method="post" action="{% url 'delete_profile' %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">Yes, delete my profile</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

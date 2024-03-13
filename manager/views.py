@@ -6,6 +6,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.paginator import Paginator
+from django.contrib.auth.models import User
 
 def index(request):
     return render(request, 'index.html')
@@ -111,11 +112,13 @@ def register_request(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            messages.success(request, "Registration successful." )
+            messages.success(request, "Registration successful.")
             return redirect("bookmark_list")
-        messages.error(request, "Unsuccessful registration. Invalid information.")
-    form = NewUserForm()
-    return render (request, "register.html", {"register_form":form})
+        else:
+            messages.error(request, "Unsuccessful registration. Invalid information.")
+    else:
+        form = NewUserForm()
+    return render(request, "register.html", {"register_form": form})
 
 def login_request(request):
     if request.method == "POST":
@@ -139,3 +142,35 @@ def logout_request(request):
     logout(request)
     messages.info(request, "You have successfully logged out.") 
     return redirect("index")
+
+def profile(request):
+    if request.method == 'POST':
+        new_username = request.POST.get('new_username')
+        new_email = request.POST.get('new_email')
+
+        user = request.user
+        if new_username and new_username != user.username:
+            if User.objects.filter(username=new_username).exists():
+                messages.error(request, 'This username is already in use. Please choose a different username.')
+            else:
+                user.username = new_username
+        if new_email:
+            if User.objects.exclude(pk=user.pk).filter(email=new_email).exists():
+                messages.error(request, 'This email address is already in use. Please use a different email.')
+            else: 
+                user.email = new_email
+
+        user.save()
+
+        if not messages.get_messages(request):
+            messages.success(request, 'Profile updated successfully.')
+            return redirect('profile')  
+
+    return render(request, 'profile.html')
+
+def delete_profile(request):
+    if request.method == 'POST':
+        request.user.delete()
+        logout(request)
+        messages.info(request, 'Profile deleted successfully.')
+        return redirect('index')
