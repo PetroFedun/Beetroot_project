@@ -43,14 +43,14 @@
 {% empty %}
   <p class="empty-message mt-2">At the moment the list is empty.</p>
 {% endfor %}
-{% if bookmarks.paginator.num_pages > 1 and not partial_results %}
+{% if bookmarks.paginator.num_pages > 1 %}
   <div id="load-more" class="text-center mt-3">
     {% if bookmarks.has_next %}
       <div class="load-more">
         <button
           hx-get="{% url 'partial_search' %}"
           hx-target="#load-more"
-          hx-vals='{"q": "{{ request.GET.q }}", "page": "{{ bookmarks.paginator.num_pages  }}"}'
+          hx-vals='{"q": "{{ request.GET.q }}", "page": "{{ bookmarks.next_page_number }}" }'
           hx-swap="outerHTML"
           class="btn btn-primary mb-3"
         >

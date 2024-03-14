@@ -100,6 +100,9 @@ def filter(request):
     selected_tags = request.GET.getlist('tags')
     selected_tags_str = ', '.join(selected_tags)
     bookmarks = Bookmark.objects.filter(user=request.user, tags__title__in=selected_tags)
+    paginator = Paginator(bookmarks, 10)
+    page = request.GET.get('page')
+    bookmarks = paginator.get_page(page)
     context = {
         'bookmarks': bookmarks,
         'tags': selected_tags_str
